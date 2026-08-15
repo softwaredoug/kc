@@ -1,0 +1,44 @@
+#!/bin/zsh
+
+set -e
+
+usage() {
+  print -u2 "usage: kc NAME[=VALUE]"
+  return 2
+}
+
+if (( $# != 1 )); then
+  usage
+fi
+
+if ! command -v security >/dev/null 2>&1; then
+  print -u2 "kc: security command not found (kc requires macOS)"
+  exit 1
+fi
+
+arg=$1
+if [[ $arg == *=* ]]; then
+  name=${arg%%=*}
+  value=${arg#*=}
+
+  if [[ -z $name ]]; then
+    print -u2 "kc: key name cannot be empty"
+    exit 2
+  fi
+
+  security add-generic-password \
+    -a "$USER" \
+    -s "$name" \
+    -w "$value" \
+    -U
+else
+  if [[ -z $arg ]]; then
+    print -u2 "kc: key name cannot be empty"
+    exit 2
+  fi
+
+  security find-generic-password \
+    -a "$USER" \
+    -s "$arg" \
+    -w
+fi
