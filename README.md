@@ -18,3 +18,14 @@ kc OPENAI_API_KEY=`sk-...`
 export OPENAI_API_KEY=$(kc OPENAI_API_KEY)
 ```
 
+## Yes thats all it is
+
+It's just saves me remembering this longer command
+
+```
+  security add-generic-password \
+    -a "$USER" \
+    -s "$name" \
+    -w "$value" \
+    -U
+```
